@@ -231,6 +231,8 @@ class SignUpPage extends GetView<SignUpController> {
                       DatePicker(
                         borderRadius: 0,
                         bgColor: AppColors.lightGray.withOpacity(0.2),
+                        isTime: false,
+                        value: controller.bd,
                       ),
                       SizedBox(
                         height: ySpace,

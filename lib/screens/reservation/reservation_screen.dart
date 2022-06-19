@@ -59,11 +59,16 @@ class ReservationPage extends GetView<ReservationController> {
                               SizedBox(
                                 width: xSpace,
                               ),
-                              const Text(
-                                  "This icon represents the reserved spots.",
-                                  style: AppTextStyle.tinyBoldBlueText),
+                              const Expanded(
+                                child: Text(
+                                    "This icon represents the reserved spots.",
+                                    style: AppTextStyle.tinyBoldBlueText),
+                              ),
                             ],
                           ),
+                        ),
+                        const SizedBox(
+                          height: 15,
                         ),
                         SizedBox(
                           width: size.width * 0.8,
@@ -79,9 +84,11 @@ class ReservationPage extends GetView<ReservationController> {
                               SizedBox(
                                 width: xSpace,
                               ),
-                              const Text(
-                                  "This icon represents the available spots.",
-                                  style: AppTextStyle.tinyBoldText),
+                              const Expanded(
+                                child: Text(
+                                    "This icon represents the available spots.",
+                                    style: AppTextStyle.tinyBoldText),
+                              ),
                             ],
                           ),
                         ),

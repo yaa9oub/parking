@@ -1,5 +1,7 @@
+import 'package:parking/const/colors.dart';
 import 'package:parking/const/text.dart';
 import 'package:parking/models/carspot.dart';
+import 'package:parking/widgets/date_picker.dart';
 import 'package:parking/widgets/snack_bar.dart';
 import 'package:parking/widgets/text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +23,8 @@ class ReservationController extends GetxController {
   List<Carspot> parking = [];
   late var uid;
 
+  static var date = "Pick ur date", time = "Pick your Time";
+
   void reserveSpot(index) {
     if (parking[index].isSelected) {
       getErrorSnackBar(
@@ -35,7 +39,7 @@ class ReservationController extends GetxController {
                 style: AppTextStyle.smallBoldText),
             content: SizedBox(
               width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.25,
+              height: MediaQuery.of(context).size.height * 0.34,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,28 +49,30 @@ class ReservationController extends GetxController {
                     style: AppTextStyle.tinyBoldText,
                   ),
                   const SizedBox(height: 40),
-                  AppTextField(
-                    label: "Date",
-                    hint: "Date de réservation",
-                    editingController: dateController,
-                    validator: (value) {
-                      if (value == "") {
-                        return "Veuillez entrer une date";
-                      }
-                      return null;
-                    },
+                  const Text(
+                    "Date",
+                    style: AppTextStyle.tinyThinText,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  DatePicker(
+                    bgColor: AppColors.gray.withOpacity(0.1),
+                    isTime: false,
+                    value: date,
                   ),
                   const SizedBox(height: 20),
-                  AppTextField(
-                    label: "Time",
-                    hint: "Temps de réservation",
-                    editingController: timeController,
-                    validator: (value) {
-                      if (value == "") {
-                        return "Veuillez entrer un temps exact";
-                      }
-                      return null;
-                    },
+                  const Text(
+                    "Time",
+                    style: AppTextStyle.tinyThinText,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  DatePicker(
+                    bgColor: AppColors.gray.withOpacity(0.1),
+                    isTime: true,
+                    value: time,
                   ),
                 ],
               ),
@@ -75,48 +81,41 @@ class ReservationController extends GetxController {
               TextButton(
                 child: const Text('Ok', style: AppTextStyle.tinyBoldBlueText),
                 onPressed: () async {
-                  if (dateController.text == "" || timeController.text == "") {
-                    getErrorSnackBar(
-                        title: "Erreur",
-                        message: "Veuillez remplir tous les champs");
-                  } else {
-                    try {
-                      print("reserving");
-                      //parking[index].isSelected = true;
+                  try {
+                    print("reserving");
+                    //parking[index].isSelected = true;
 
-                      //updating the spots
-                      var collection =
-                          FirebaseFirestore.instance.collection('parking');
-                      collection.doc("spots").update({
-                        "${index + 1}": true,
-                      });
+                    //updating the spots
+                    var collection =
+                        FirebaseFirestore.instance.collection('parking');
+                    collection.doc("spots").update({
+                      "${index + 1}": true,
+                    });
 
-                      getParkingSpots();
+                    getParkingSpots();
 
-                      print(uid);
-                      //adding the reservation for the user history
-                      FirebaseFirestore.instance
-                          .collection("reservation")
-                          .doc(uid)
-                          .set({
-                        dateController.text: {
-                          "reservationDate": dateController.text,
-                          "reservationTime": timeController.text,
-                          "spotId": index + 1,
-                        }
-                      }, SetOptions(merge: true));
+                    //adding the reservation for the user history
+                    FirebaseFirestore.instance
+                        .collection("reservation")
+                        .doc(uid)
+                        .set({
+                      date + time: {
+                        "reservationDate": date,
+                        "reservationTime": time,
+                        "spotId": index + 1,
+                      }
+                    }, SetOptions(merge: true));
 
-                      dateController.text = "";
-                      timeController.text = "";
-                      getSuccessSnackBar(
-                          title: "Succès",
-                          message: "Votre réservation a été enregistrée");
-                      Navigator.of(context).pop();
-                    } catch (e) {
-                      print(e.toString());
-                    }
-                    update();
+                    dateController.text = "";
+                    timeController.text = "";
+                    getSuccessSnackBar(
+                        title: "Succès",
+                        message: "Votre réservation a été enregistrée");
+                    Navigator.of(context).pop();
+                  } catch (e) {
+                    print(e.toString());
                   }
+                  update();
                 },
               ),
               TextButton(
