@@ -2,7 +2,6 @@ import 'package:parking/const/colors.dart';
 import 'package:parking/const/text.dart';
 import 'package:parking/screens/history/history_controller.dart';
 import 'package:parking/widgets/buttons.dart';
-import 'package:parking/widgets/car_spot.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

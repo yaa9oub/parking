@@ -15,7 +15,7 @@ class SignUpController extends GetxController {
   TextEditingController matriculeController = TextEditingController();
   TextEditingController brandController = TextEditingController();
   TextEditingController colorController = TextEditingController();
-
+  var bd;
   late FirebaseAuth auth;
   bool inProgress = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
